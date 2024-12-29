@@ -1,8 +1,20 @@
 {
   "name": "git-toolkit",
-  "displayName": "%displayName%",
-  "description": "%description%",
+  "displayName": "Git Toolkit",
+  "description": "Enhanced Git toolkit extension for VS Code",
   "version": "1.0.0",
+  "publisher": "ffpy",
+  "author": {
+    "name": "ffpy",
+    "email": "q1411603774@163.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ffpy/vscode-git-toolkit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ffpy/vscode-git-toolkit"
+  },
+  "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.96.0"
   },

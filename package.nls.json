@@ -1,6 +1,4 @@
 {
-    "displayName": "Git Toolkit",
-    "description": "Enhanced Git toolkit extension for VS Code providing various Git workflow improvements and productivity features.",
     "git-toolkit.gitPullRebase.title": "Git pull with stash",
     "git-toolkit.gitSquashCommits.title": "Git squash commits",
     "git-toolkit.addChangelist.title": "Add changelist",
