@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as l10n from '@vscode/l10n';
 import { log, execCommand, getSkipWorktreeFiles, getGitWorkspaceFolders, clearGitRepoCache } from '../utils';
 import * as path from 'path';
 import * as fs from 'fs/promises';
@@ -85,7 +86,8 @@ export class Changelist {
             
             await execCommand('git', args, this.workspacePath);
         } catch (error) {
-            log(`Failed to update git index for ${path}: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            log(l10n.t('git-toolkit.changelist.failedToUpdateGitIndex', { path, error: errorMessage }));
             throw error;
         }
     }
@@ -115,7 +117,7 @@ export class ChangelistManager {
     readonly onDidChangeChangelists = this._onDidChangeChangelists.event;
 
     private constructor() {
-        log('Initializing ChangelistManager');
+        log(l10n.t('git-toolkit.changelist.initializing'));
         // Initialize and load state
         this.loadState().then(() => {
             this._onDidChangeChangelists.fire();
@@ -199,7 +201,7 @@ export class ChangelistManager {
      */
     async removeChangelist(name: string, workspacePath: string): Promise<void> {
         if (name === DEFAULT_CHANGELIST_NAME) {
-            throw new Error(`Cannot remove ${DEFAULT_CHANGELIST_NAME} changelist`);
+            throw new Error(l10n.t('git-toolkit.changelist.cannotRemoveDefault', { name: DEFAULT_CHANGELIST_NAME }));
         }
         const key = this.getChangelistKey(workspacePath, name);
         const changelist = this.changelists.get(key);
@@ -224,11 +226,11 @@ export class ChangelistManager {
      */
     async renameChangelist(oldName: string, newName: string, workspacePath: string): Promise<void> {
         if (oldName === DEFAULT_CHANGELIST_NAME) {
-            throw new Error(`Cannot rename ${DEFAULT_CHANGELIST_NAME} changelist`);
+            throw new Error(l10n.t('git-toolkit.changelist.cannotRenameDefault', { name: DEFAULT_CHANGELIST_NAME }));
         }
         const newKey = this.getChangelistKey(workspacePath, newName);
         if (this.changelists.has(newKey)) {
-            throw new Error('Changelist with this name already exists');
+            throw new Error(l10n.t('git-toolkit.changelist.nameAlreadyExists'));
         }
         const oldKey = this.getChangelistKey(workspacePath, oldName);
         const changelist = this.changelists.get(oldKey);
@@ -259,7 +261,8 @@ export class ChangelistManager {
             // Trigger update event
             this._onDidChangeChangelists.fire();
         } catch (error) {
-            log(`Failed to save changelist state (${workspacePath}): ${error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            log(l10n.t('git-toolkit.changelist.failedToSaveState', { workspace: workspacePath, error: errorMessage }));
         }
     }
 
@@ -373,7 +376,8 @@ export class ChangelistManager {
 
             this._onDidChangeChangelists.fire();
         } catch (error) {
-            log(`Failed to load changelist state: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            log(l10n.t('git-toolkit.changelist.failedToLoadState', { error: errorMessage }));
         }
     }
 
@@ -405,7 +409,8 @@ export class ChangelistManager {
                 await this.saveState(workspacePath);
             }
         } catch (error) {
-            log(`Failed to load changelist state for workspace ${workspacePath}: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            log(l10n.t('git-toolkit.changelist.failedToLoadWorkspaceState', { workspace: workspacePath, error: errorMessage }));
             throw error;
         }
     }

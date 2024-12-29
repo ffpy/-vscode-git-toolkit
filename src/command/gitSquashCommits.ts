@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as l10n from '@vscode/l10n';
 import { execCommand, log, selectGitWorkspace, getOutputChannel } from '../utils';
 
 /** Git Commit Squash Tool */
@@ -7,27 +8,27 @@ export async function gitSquashCommits() {
         getOutputChannel().show();
 
         // Select workspace
-        const workspacePath = await selectGitWorkspace('Select workspace to squash commits');
+        const workspacePath = await selectGitWorkspace(l10n.t('git-toolkit.squash.selectWorkspace'));
         if (!workspacePath) {
             return;
         }
 
         const commits = await getCommits(workspacePath);
         if (commits.length === 0) {
-            throw new Error('No commits found');
+            throw new Error(l10n.t('git-toolkit.squash.noCommits'));
         }
 
         // Create QuickPick
         const quickPick = vscode.window.createQuickPick();
-        quickPick.title = `Commit List (${workspacePath})`;
-        quickPick.placeholder = 'Select commits to squash (multiple selection allowed)';
+        quickPick.title = l10n.t('git-toolkit.squash.commitList', workspacePath);
+        quickPick.placeholder = l10n.t('git-toolkit.squash.selectCommits');
         quickPick.canSelectMany = true;
 
         // Set options
         quickPick.items = commits.map(commit => ({
             label: commit.message,
             description: commit.hash,
-            detail: `${commit.author} committed on ${commit.date}`,
+            detail: l10n.t('git-toolkit.squash.authorCommitted', commit.author, commit.date),
             commit
         }));
 
@@ -48,7 +49,7 @@ export async function gitSquashCommits() {
 
         if (selection.length < 2) {
             if (selection.length === 1) {
-                vscode.window.showErrorMessage('Please select at least two commits to squash');
+                vscode.window.showErrorMessage(l10n.t('git-toolkit.squash.selectAtLeastTwo'));
             }
             return;
         }
@@ -60,7 +61,7 @@ export async function gitSquashCommits() {
 
         await squashSelectedCommits(selectedCommits, workspacePath);
     } catch (error: any) {
-        const errorMessage = `Failed to squash commits: ${error.message}`;
+        const errorMessage = l10n.t('git-toolkit.squash.failedToSquash', error.message);
         log(errorMessage);
         console.error(error);
         vscode.window.showErrorMessage(errorMessage);
@@ -104,8 +105,9 @@ async function getCommits(workspacePath: string): Promise<any[]> {
                 };
             });
     } catch (error: any) {
-        log(`Failed to get Git log: ${error.message}`);
-        vscode.window.showErrorMessage(`Failed to get Git log: ${error.message}`);
+        const errorMessage = l10n.t('git-toolkit.squash.failedToGetLog', error.message);
+        log(errorMessage);
+        vscode.window.showErrorMessage(errorMessage);
         return [];
     }
 }
@@ -115,7 +117,7 @@ async function getCommits(workspacePath: string): Promise<any[]> {
  */
 async function squashSelectedCommits(commits: any[], workspacePath: string) {
     if (commits.length < 2) {
-        throw new Error('Please select at least two commits to squash');
+        throw new Error(l10n.t('git-toolkit.squash.selectAtLeastTwo'));
     }
 
     // Get earliest commit
@@ -143,7 +145,7 @@ async function squashSelectedCommits(commits: any[], workspacePath: string) {
     
     // Wait for user to edit and confirm
     const editResult = await vscode.window.showInformationMessage(
-        'Please edit the commit message in the editor, then click "OK" button.',
+        l10n.t('git-toolkit.squash.editMessage'),
         'OK',
         'Cancel'
     );
@@ -158,8 +160,8 @@ async function squashSelectedCommits(commits: any[], workspacePath: string) {
         return;
     }
 
-    log(`New commit message: ${newMessage}`);
-    log(`Earliest commit: ${earliestCommit}`);
+    log(l10n.t('git-toolkit.squash.newMessage', newMessage));
+    log(l10n.t('git-toolkit.squash.earliestCommit', earliestCommit));
 
     try {
         // Soft reset to the commit before earliest
@@ -168,9 +170,10 @@ async function squashSelectedCommits(commits: any[], workspacePath: string) {
         // Create new commit
         await execCommand('git', ['commit', '-m', newMessage], workspacePath);
         
-        vscode.window.showInformationMessage('Commits squashed successfully!');
+        vscode.window.showInformationMessage(l10n.t('git-toolkit.squash.success'));
     } catch (error: any) {
-        vscode.window.showErrorMessage(`Failed to squash commits: ${error.message}`);
+        const errorMessage = l10n.t('git-toolkit.squash.failedToSquash', error.message);
+        vscode.window.showErrorMessage(errorMessage);
         throw error;
     }
 }

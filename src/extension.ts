@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as l10n from '@vscode/l10n';
 import { initOutputChannel } from './utils';
 import { gitSquashCommits } from './command/gitSquashCommits';
 import { gitPullRebase } from './command/gitPullRebase';
@@ -16,10 +17,39 @@ import {
 	addStagedToChangelist,
 	refreshChangelists
 } from './command/gitChangelist';
+import * as path from 'path';
+import * as fs from 'fs';
+
+/**
+ * Initialize l10n configuration
+ * @param extensionPath The path to the extension
+ */
+function initL10n(extensionPath: string) {
+	const l10nDir = path.join(extensionPath, 'l10n');
+	try {
+		// Read all json files in l10n directory
+		const files = fs.readdirSync(l10nDir).filter(file => file.endsWith('.json'));
+		const contents: { [key: string]: any } = {};
+		
+		// Merge all json files
+		for (const file of files) {
+			const filePath = path.join(l10nDir, file);
+			const fileContent = fs.readFileSync(filePath, 'utf-8');
+			Object.assign(contents, JSON.parse(fileContent));
+		}
+
+		l10n.config({ contents });
+	} catch (e) {
+		console.error('Failed to configure l10n:', e);
+	}
+}
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	// Initialize l10n
+	initL10n(context.extensionPath);
+
 	// Initialize output channel
 	initOutputChannel(context);
 

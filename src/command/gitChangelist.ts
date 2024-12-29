@@ -3,6 +3,7 @@
  */
 
 import * as vscode from 'vscode';
+import * as l10n from '@vscode/l10n';
 import { Changelist, ChangelistManager, DEFAULT_CHANGELIST_NAME } from '../model/changelist';
 import { ChangelistTreeItem } from '../view/changelistView';
 import { execCommand, getGitWorkspaceFolders } from '../utils';
@@ -25,7 +26,8 @@ async function getModifiedFiles(workspacePath: string): Promise<string[]> {
         // Return array after removing duplicates using Set
         return Array.from(new Set(files));
     } catch (error) {
-        vscode.window.showErrorMessage(`Failed to get modified files: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToGetModifiedFiles', { error: errorMessage }));
         return [];
     }
 }
@@ -37,7 +39,7 @@ async function getModifiedFiles(workspacePath: string): Promise<string[]> {
 export async function addChangelist(): Promise<void> {
     const gitWorkspaceFolders = await getGitWorkspaceFolders();
     if (gitWorkspaceFolders.length === 0) {
-        vscode.window.showErrorMessage('No Git repository found');
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.noGitRepository'));
         return;
     }
 
@@ -53,7 +55,7 @@ export async function addChangelist(): Promise<void> {
                 description: folder.uri.fsPath,
                 path: folder.uri.fsPath
             })),
-            { placeHolder: 'Select workspace to create changelist' }
+            { placeHolder: l10n.t('git-toolkit.changelist.selectWorkspaceToCreate') }
         );
         if (!selected) {
             return;
@@ -64,26 +66,27 @@ export async function addChangelist(): Promise<void> {
     }
 
     const name = await vscode.window.showInputBox({
-        prompt: 'Enter new changelist name',
-        placeHolder: 'Changelist name'
+        prompt: l10n.t('git-toolkit.changelist.enterNewName'),
+        placeHolder: l10n.t('git-toolkit.changelist.changelistName')
     });
 
     if (name && workspacePath) {
         if (name === DEFAULT_CHANGELIST_NAME) {
-            vscode.window.showErrorMessage(`Cannot create changelist with default name: ${DEFAULT_CHANGELIST_NAME}`);
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.cannotUseDefaultName', { name: DEFAULT_CHANGELIST_NAME }));
             return;
         }
 
         const manager = ChangelistManager.getInstance();
         if (manager.getChangelists(workspacePath).find(cl => cl.name === name)) {
-            vscode.window.showErrorMessage(`Changelist "${name}" already exists`);
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.alreadyExists', { name }));
             return;
         }
 
         try {
             await manager.addChangelist(name, workspacePath);
         } catch (error) {
-            vscode.window.showErrorMessage(`Failed to create changelist: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToCreate', { error: errorMessage }));
         }
     }
 }
@@ -94,24 +97,25 @@ export async function addChangelist(): Promise<void> {
  */
 export async function removeChangelist(item: any): Promise<void> {
     if (!item?.changelist?.name) {
-        vscode.window.showErrorMessage('Please select a changelist to remove from the changelist view');
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.selectToRemove'));
         return;
     }
 
     const result = await vscode.window.showWarningMessage(
-        `Are you sure you want to delete changelist "${item.changelist.name}"?`,
+        l10n.t('git-toolkit.changelist.confirmDelete', { name: item.changelist.name }),
         { modal: true },
-        'Confirm'
+        l10n.t('git-toolkit.common.confirm')
     );
 
-    if (result !== 'Confirm') {
+    if (result !== l10n.t('git-toolkit.common.confirm')) {
         return;
     }
 
     try {
         await ChangelistManager.getInstance().removeChangelist(item.changelist.name, item.changelist.workspacePath);
     } catch (error) {
-        vscode.window.showErrorMessage(`Failed to delete changelist: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToDelete', { error: errorMessage }));
     }
 }
 
@@ -121,31 +125,32 @@ export async function removeChangelist(item: any): Promise<void> {
  */
 export async function renameChangelist(item: any): Promise<void> {
     if (!item?.changelist?.name) {
-        vscode.window.showErrorMessage('Please select a changelist to rename from the changelist view');
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.selectToRename'));
         return;
     }
 
     const newName = await vscode.window.showInputBox({
-        prompt: 'Enter new changelist name',
-        placeHolder: 'New name'
+        prompt: l10n.t('git-toolkit.changelist.enterNewName'),
+        placeHolder: l10n.t('git-toolkit.changelist.newName')
     });
 
     if (newName) {
         if (newName === DEFAULT_CHANGELIST_NAME) {
-            vscode.window.showErrorMessage(`Cannot rename to default changelist name: ${DEFAULT_CHANGELIST_NAME}`);
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.cannotRenameToDefault', { name: DEFAULT_CHANGELIST_NAME }));
             return;
         }
 
         const manager = ChangelistManager.getInstance();
         if (manager.getChangelists(item.changelist.workspacePath).find(cl => cl.name === newName)) {
-            vscode.window.showErrorMessage(`Changelist "${newName}" already exists`);
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.alreadyExists', { name: newName }));
             return;
         }
 
         try {
             await manager.renameChangelist(item.changelist.name, newName, item.changelist.workspacePath);
         } catch (error) {
-            vscode.window.showErrorMessage(`Failed to rename changelist: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToRename', { error: errorMessage }));
         }
     }
 }
@@ -162,7 +167,7 @@ export async function addToChangelist(uriOrArgs: { resourceUri: vscode.Uri }): P
         const uri = uriOrArgs.resourceUri;
         const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
         if (!workspaceFolder) {
-            vscode.window.showErrorMessage('File is not in any workspace');
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.fileNotInWorkspace'));
             return;
         }
 
@@ -171,7 +176,7 @@ export async function addToChangelist(uriOrArgs: { resourceUri: vscode.Uri }): P
         const changelists = ChangelistManager.getInstance().getChangelists(workspacePath);
         
         if (changelists.length === 0) {
-            vscode.window.showErrorMessage('No available changelists, please create one first');
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.noAvailableChangelists'));
             return;
         }
 
@@ -184,12 +189,12 @@ export async function addToChangelist(uriOrArgs: { resourceUri: vscode.Uri }): P
             // Show quick pick if there are multiple changelists
             const items = changelists.map(cl => ({
                 label: cl.name,
-                description: `${cl.items.length} files`,
+                description: l10n.t('git-toolkit.changelist.filesCount', { count: cl.items.length }),
                 changelist: cl
             }));
 
             const selected = await vscode.window.showQuickPick(items, {
-                placeHolder: 'Select changelist to move to'
+                placeHolder: l10n.t('git-toolkit.changelist.selectToMoveTo')
             });
 
             if (selected) {
@@ -201,11 +206,13 @@ export async function addToChangelist(uriOrArgs: { resourceUri: vscode.Uri }): P
             try {
                 await targetChangelist.addFile(filePath);
             } catch (error) {
-                vscode.window.showErrorMessage(`Failed to add file to changelist: ${error}`);
+                const errorMessage = error instanceof Error ? error.message : String(error);
+                vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToAddFile', { error: errorMessage }));
             }
         }
     } catch (error) {
-        vscode.window.showErrorMessage(`Error processing file: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.errorProcessingFile', { error: errorMessage }));
     }
 }
 
@@ -215,14 +222,15 @@ export async function addToChangelist(uriOrArgs: { resourceUri: vscode.Uri }): P
  */
 export async function removeFromChangelist(item: any): Promise<void> {
     if (!item?.changelist?.name || !item?.file) {
-        vscode.window.showErrorMessage('Please select a file to remove from the changelist');
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.selectFileToRemove'));
         return;
     }
 
     try {
         await item.changelist.removeFile(item.file);
     } catch (error) {
-        vscode.window.showErrorMessage(`Failed to remove file from changelist: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToRemoveFile', { error: errorMessage }));
     }
 }
 
@@ -233,17 +241,17 @@ export async function removeFromChangelist(item: any): Promise<void> {
  */
 export async function removeAllFromChangelist(item: ChangelistTreeItem): Promise<void> {
     if (!item?.changelist?.name) {
-        vscode.window.showErrorMessage('Please select a changelist to clear');
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.selectChangelistToClear'));
         return;
     }
 
     const result = await vscode.window.showWarningMessage(
-        `Are you sure you want to remove all files from changelist "${item.changelist.name}"?`,
+        l10n.t('git-toolkit.changelist.confirmRemoveAll', { name: item.changelist.name }),
         { modal: true },
-        'Confirm'
+        l10n.t('git-toolkit.common.confirm')
     );
 
-    if (result !== 'Confirm') {
+    if (result !== l10n.t('git-toolkit.common.confirm')) {
         return;
     }
 
@@ -255,7 +263,8 @@ export async function removeAllFromChangelist(item: ChangelistTreeItem): Promise
             await changelist.removeFile(file);
         }
     } catch (error) {
-        vscode.window.showErrorMessage(`Failed to remove all files: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToRemoveAll', { error: errorMessage }));
     }
 }
 
@@ -267,7 +276,7 @@ export async function removeAllFromChangelist(item: ChangelistTreeItem): Promise
 export async function addStagedToChangelist(item: ChangelistTreeItem): Promise<void> {
     const changelist = item.changelist;
     if (!changelist?.name) {
-        vscode.window.showErrorMessage('Please select a changelist to add files to');
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.selectChangelistToAddFiles'));
         return;
     }
 
@@ -276,15 +285,15 @@ export async function addStagedToChangelist(item: ChangelistTreeItem): Promise<v
         const modifiedFiles = await getModifiedFiles(changelist.workspacePath);
         
         if (modifiedFiles.length === 0) {
-            vscode.window.showInformationMessage('No modified files');
+            vscode.window.showInformationMessage(l10n.t('git-toolkit.changelist.noModifiedFiles'));
             return;
         }
 
         // Create QuickPick multi-select interface
         const quickPick = vscode.window.createQuickPick();
         quickPick.canSelectMany = true;
-        quickPick.title = `Select files to add to changelist "${changelist.name}"`;
-        quickPick.placeholder = 'Select files (multi-select)';
+        quickPick.title = l10n.t('git-toolkit.changelist.selectFilesToAdd', { name: changelist.name });
+        quickPick.placeholder = l10n.t('git-toolkit.changelist.selectFilesMulti');
         quickPick.items = modifiedFiles.map(file => ({ 
             label: file
         }));
@@ -300,14 +309,16 @@ export async function addStagedToChangelist(item: ChangelistTreeItem): Promise<v
                         await changelist.addFile(file);
                     }
                 } catch (error) {
-                    vscode.window.showErrorMessage(`Failed to add file to changelist: ${error}`);
+                    const errorMessage = error instanceof Error ? error.message : String(error);
+                    vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.failedToAddFile', { error: errorMessage }));
                 }
             }
         });
 
         quickPick.show();
     } catch (error) {
-        vscode.window.showErrorMessage(`Error processing file: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.errorProcessingFile', { error: errorMessage }));
     }
 }
 

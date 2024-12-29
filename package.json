@@ -186,6 +186,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@vscode/l10n": "^0.0.18",
     "git-toolkit": "file:"
   }
 }

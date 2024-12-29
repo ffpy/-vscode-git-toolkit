@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@vscode/l10n':
+        specifier: ^0.0.18
+        version: 0.0.18
       git-toolkit:
         specifier: 'file:'
         version: 'file:'
@@ -197,6 +200,9 @@ packages:
   '@typescript-eslint/visitor-keys@8.18.2':
     resolution: {integrity: sha512-zORcwn4C3trOWiCqFQP1x6G3xTRyZ1LYydnj51cRnJ6hxBlr/cKPckk+PKPUw/fXmvfKTcw7bwY3w9izgx5jZw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@vscode/l10n@0.0.18':
+    resolution: {integrity: sha512-KYSIHVmslkaCDyw013pphY+d7x1qV8IZupYfeIfzNA+nsaWHbn5uPuQRvdRFsa9zFzGeudPuoGoZ1Op4jrJXIQ==}
 
   '@vscode/test-cli@0.0.10':
     resolution: {integrity: sha512-B0mMH4ia+MOOtwNiLi79XhA+MLmUItIC8FckEuKrVAVriIuSWjt7vv4+bF8qVFiNFe4QRfzPaIZk39FZGWEwHA==}
@@ -1160,6 +1166,8 @@ snapshots:
       '@typescript-eslint/types': 8.18.2
       eslint-visitor-keys: 4.2.0
 
+  '@vscode/l10n@0.0.18': {}
+
   '@vscode/test-cli@0.0.10':
     dependencies:
       '@types/mocha': 10.0.10
@@ -1468,7 +1476,9 @@ snapshots:
 
   get-caller-file@2.0.5: {}
 
-  'git-toolkit@file:': {}
+  'git-toolkit@file:':
+    dependencies:
+      '@vscode/l10n': 0.0.18
 
   glob-parent@5.1.2:
     dependencies:
