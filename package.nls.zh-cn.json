@@ -1,0 +1,16 @@
+{
+    "displayName": "Git 工具箱",
+    "description": "为 VS Code 提供增强的 Git 工具箱扩展，提供各种 Git 工作流改进和生产力功能。",
+    "git-toolkit.gitPullRebase.title": "Git 拉取并暂存",
+    "git-toolkit.gitSquashCommits.title": "Git 压缩提交",
+    "git-toolkit.addChangelist.title": "添加变更列表",
+    "git-toolkit.removeChangelist.title": "删除变更列表",
+    "git-toolkit.renameChangelist.title": "重命名变更列表",
+    "git-toolkit.addToChangelist.title": "添加文件到变更列表",
+    "git-toolkit.removeFromChangelist.title": "从变更列表移除文件",
+    "git-toolkit.removeAllFromChangelist.title": "移除所有文件",
+    "git-toolkit.refreshChangelists.title": "刷新变更列表",
+    "git-toolkit.addStagedToChangelist.title": "添加文件到变更列表",
+    "view.changelists.title": "变更列表",
+    "view.changelists.contextTitle": "Git 变更列表"
+}

@@ -1,0 +1,191 @@
+{
+  "name": "git-toolkit",
+  "displayName": "%displayName%",
+  "description": "%description%",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "git-toolkit.gitPullRebase",
+        "title": "%git-toolkit.gitPullRebase.title%"
+      },
+      {
+        "command": "git-toolkit.gitSquashCommits",
+        "title": "%git-toolkit.gitSquashCommits.title%"
+      },
+      {
+        "command": "git-toolkit.addChangelist",
+        "title": "%git-toolkit.addChangelist.title%",
+        "icon": "$(add)"
+      },
+      {
+        "command": "git-toolkit.removeChangelist",
+        "title": "%git-toolkit.removeChangelist.title%",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "git-toolkit.renameChangelist",
+        "title": "%git-toolkit.renameChangelist.title%",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "git-toolkit.addToChangelist",
+        "title": "%git-toolkit.addToChangelist.title%"
+      },
+      {
+        "command": "git-toolkit.removeFromChangelist",
+        "title": "%git-toolkit.removeFromChangelist.title%",
+        "icon": "$(trash)",
+        "group": "inline"
+      },
+      {
+        "command": "git-toolkit.removeAllFromChangelist",
+        "title": "%git-toolkit.removeAllFromChangelist.title%",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "git-toolkit.refreshChangelists",
+        "title": "%git-toolkit.refreshChangelists.title%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "git-toolkit.addStagedToChangelist",
+        "title": "%git-toolkit.addStagedToChangelist.title%",
+        "icon": "$(add)"
+      }
+    ],
+    "views": {
+      "scm": [
+        {
+          "id": "git-toolkit-changelists",
+          "name": "%view.changelists.title%",
+          "icon": "$(list-tree)",
+          "contextualTitle": "%view.changelists.contextTitle%"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "git-toolkit.gitPullRebase",
+          "when": "workbenchState != empty && gitOpenRepositoryCount != 0"
+        },
+        {
+          "command": "git-toolkit.gitSquashCommits",
+          "when": "workbenchState != empty && gitOpenRepositoryCount != 0"
+        },
+        {
+          "command": "git-toolkit.addChangelist",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.removeChangelist",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.renameChangelist",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.addToChangelist",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.removeFromChangelist",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.removeAllFromChangelist",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.refreshChangelists",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.addStagedToChangelist",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "git-toolkit.addChangelist",
+          "when": "view == git-toolkit-changelists",
+          "group": "navigation@1"
+        },
+        {
+          "command": "git-toolkit.refreshChangelists",
+          "when": "view == git-toolkit-changelists",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "git-toolkit.renameChangelist",
+          "when": "view == git-toolkit-changelists && viewItem == changelist",
+          "group": "inline@1"
+        },
+        {
+          "command": "git-toolkit.removeChangelist",
+          "when": "view == git-toolkit-changelists && viewItem == changelist",
+          "group": "inline@2"
+        },
+        {
+          "command": "git-toolkit.removeAllFromChangelist",
+          "when": "view == git-toolkit-changelists && (viewItem == changelist || viewItem == defaultChangelist)",
+          "group": "inline@3"
+        },
+        {
+          "command": "git-toolkit.removeFromChangelist",
+          "when": "view == git-toolkit-changelists && viewItem == file",
+          "group": "inline"
+        },
+        {
+          "command": "git-toolkit.addStagedToChangelist",
+          "when": "view == git-toolkit-changelists && (viewItem == changelist || viewItem == defaultChangelist)",
+          "group": "inline@0"
+        }
+      ],
+      "scm/resourceState/context": [
+        {
+          "command": "git-toolkit.addToChangelist",
+          "group": "1_modification",
+          "when": "scmProvider == git",
+          "arguments": [
+            {
+              "resourceUri": "${resourceUri}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "git-toolkit": "file:"
+  }
+}
