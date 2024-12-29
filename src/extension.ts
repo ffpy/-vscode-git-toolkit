@@ -27,15 +27,20 @@ import * as fs from 'fs';
 function initL10n(extensionPath: string) {
 	const l10nDir = path.join(extensionPath, 'l10n');
 	try {
-		// Read all json files in l10n directory
-		const files = fs.readdirSync(l10nDir).filter(file => file.endsWith('.json'));
-		const contents: { [key: string]: any } = {};
+		// Get system language
+		const locale = vscode.env.language;
 		
-		// Merge all json files
-		for (const file of files) {
-			const filePath = path.join(l10nDir, file);
-			const fileContent = fs.readFileSync(filePath, 'utf-8');
-			Object.assign(contents, JSON.parse(fileContent));
+		// Read base language file first
+		const baseFile = path.join(l10nDir, 'bundle.l10n.json');
+		const contents = JSON.parse(fs.readFileSync(baseFile, 'utf-8'));
+		
+		// If system language is not English, try to load language specific file
+		if (locale !== 'en') {
+			const localeFile = path.join(l10nDir, `bundle.l10n.${locale}.json`);
+			if (fs.existsSync(localeFile)) {
+				const localeContent = JSON.parse(fs.readFileSync(localeFile, 'utf-8'));
+				Object.assign(contents, localeContent);
+			}
 		}
 
 		l10n.config({ contents });
