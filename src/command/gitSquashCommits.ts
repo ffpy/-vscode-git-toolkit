@@ -165,7 +165,7 @@ async function squashSelectedCommits(commits: any[], workspacePath: string) {
 
     try {
         // Soft reset to the commit before earliest
-        await execCommand('git', ['reset', '--soft', `${earliestCommit}^`], workspacePath);
+        await execCommand('git', ['reset', '--soft', `"${earliestCommit}^"`], workspacePath);
         
         // Create new commit
         await execCommand('git', ['commit', '-m', newMessage], workspacePath);
