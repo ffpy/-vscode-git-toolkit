@@ -6,7 +6,7 @@
     "git-toolkit.squash.selectWorkspace": "选择要压缩提交的工作区",
     "git-toolkit.squash.noCommits": "未找到提交记录",
     "git-toolkit.squash.commitList": "提交列表 ({0})",
-    "git-toolkit.squash.selectCommits": "选择要压缩的提交（支持多选）",
+    "git-toolkit.squash.selectCommits": "选择要压缩的提交（该提交及其之后的所有提交都会被压缩）",
     "git-toolkit.squash.authorCommitted": "{0} 提交于 {1}",
     "git-toolkit.squash.selectAtLeastTwo": "请至少选择两个提交进行压缩",
     "git-toolkit.squash.editMessage": "请在编辑器中编辑提交信息，然后点击\"确定\"按钮。",
@@ -15,6 +15,7 @@
     "git-toolkit.squash.success": "提交压缩成功！",
     "git-toolkit.squash.failedToSquash": "压缩提交失败：{0}",
     "git-toolkit.squash.failedToGetLog": "获取 Git 日志失败：{0}",
+    "git-toolkit.squash.noCommitsToSquash": "没有找到其他可以与所选提交一起压缩的提交",
 
     "git-toolkit.pull.selectWorkspace": "选择要执行 Git Pull Rebase 的工作区",
     "git-toolkit.pull.stashingUncommitted": "正在暂存未提交的代码...",

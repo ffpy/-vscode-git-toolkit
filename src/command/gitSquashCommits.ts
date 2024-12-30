@@ -18,11 +18,14 @@ export async function gitSquashCommits() {
             throw new Error(l10n.t('git-toolkit.squash.noCommits'));
         }
 
+        // Sort commits by date in descending order
+        commits.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
         // Create QuickPick
         const quickPick = vscode.window.createQuickPick();
         quickPick.title = l10n.t('git-toolkit.squash.commitList', workspacePath);
         quickPick.placeholder = l10n.t('git-toolkit.squash.selectCommits');
-        quickPick.canSelectMany = true;
+        quickPick.canSelectMany = false;
 
         // Set options
         quickPick.items = commits.map(commit => ({
@@ -38,7 +41,7 @@ export async function gitSquashCommits() {
         // Wait for user selection
         const selection = await new Promise<readonly vscode.QuickPickItem[]>(resolve => {
             quickPick.onDidAccept(() => {
-                resolve(quickPick.selectedItems);
+                resolve([quickPick.selectedItems[0]]);
                 quickPick.hide();
             });
             quickPick.onDidHide(() => {
@@ -47,19 +50,22 @@ export async function gitSquashCommits() {
             });
         });
 
-        if (selection.length < 2) {
-            if (selection.length === 1) {
-                vscode.window.showErrorMessage(l10n.t('git-toolkit.squash.selectAtLeastTwo'));
-            }
+        if (selection.length === 0) {
             return;
         }
 
-        // Get selected commits
-        const selectedCommits = selection
-            .map(item => (item as any).commit)
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        // Get selected commit
+        const selectedCommit = (selection[0] as any).commit;
+        const commitsToSquash = commits.filter(commit => 
+            new Date(commit.date).getTime() >= new Date(selectedCommit.date).getTime()
+        );
 
-        await squashSelectedCommits(selectedCommits, workspacePath);
+        if (commitsToSquash.length <= 1) {
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.squash.noCommitsToSquash'));
+            return;
+        }
+
+        await squashSelectedCommits(commitsToSquash, workspacePath);
     } catch (error: any) {
         const errorMessage = l10n.t('git-toolkit.squash.failedToSquash', error.message);
         log(errorMessage);

@@ -6,7 +6,7 @@
     "git-toolkit.squash.selectWorkspace": "Select workspace to squash commits",
     "git-toolkit.squash.noCommits": "No commits found",
     "git-toolkit.squash.commitList": "Commit List ({0})",
-    "git-toolkit.squash.selectCommits": "Select commits to squash (multiple selection allowed)",
+    "git-toolkit.squash.selectCommits": "Select commit to squash (this and all commits after will be squashed)",
     "git-toolkit.squash.authorCommitted": "{0} committed on {1}",
     "git-toolkit.squash.selectAtLeastTwo": "Please select at least two commits to squash",
     "git-toolkit.squash.editMessage": "Please edit the commit message in the editor, then click \"OK\" button.",
@@ -15,6 +15,7 @@
     "git-toolkit.squash.success": "Commits squashed successfully!",
     "git-toolkit.squash.failedToSquash": "Failed to squash commits: {0}",
     "git-toolkit.squash.failedToGetLog": "Failed to get Git log: {0}",
+    "git-toolkit.squash.noCommitsToSquash": "No other commits found to squash with the selected commit",
 
     "git-toolkit.pull.selectWorkspace": "Select workspace for Git Pull Rebase",
     "git-toolkit.pull.stashingUncommitted": "Stashing uncommitted code...",
