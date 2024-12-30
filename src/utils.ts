@@ -47,7 +47,7 @@ export function log(message: string) {
  * @param cwd Working directory
  * @returns Command output
  */
-export function execCommand(command: string, args: string[], cwd?: string): Promise<string> {
+export function execCommand(command: string, args: string[], cwd?: string, shell: boolean = false): Promise<string> {
     return new Promise((resolve, reject) => {
         // Get workspace path
         if (!cwd) {
@@ -63,7 +63,7 @@ export function execCommand(command: string, args: string[], cwd?: string): Prom
         log(`Executing command: ${command} ${args.join(' ')}`);
 
         const process = spawn(command, args, { 
-            shell: true,
+            shell,
             cwd
         });
         let stdout = '';

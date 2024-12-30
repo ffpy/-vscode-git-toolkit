@@ -84,8 +84,8 @@ async function getCommits(workspacePath: string): Promise<any[]> {
             'log',
             '-n',
             '10',
-            '--pretty="format:%h|%an|%ad|%s"',
-            '--date="format:%Y-%m-%d %H:%M:%S"',
+            '--pretty=format:%h|%an|%ad|%s',
+            '--date=format:%Y-%m-%d %H:%M:%S',
             '--no-merges'
         ], workspacePath);
 
@@ -146,12 +146,12 @@ async function squashSelectedCommits(commits: any[], workspacePath: string) {
     // Wait for user to edit and confirm
     const editResult = await vscode.window.showInformationMessage(
         l10n.t('git-toolkit.squash.editMessage'),
-        'OK',
-        'Cancel'
+        l10n.t('git-toolkit.common.ok'),
+        l10n.t('git-toolkit.common.cancel')
     );
 
     // Get content before closing editor
-    const newMessage = editResult === 'OK' ? document.getText() : undefined;
+    const newMessage = editResult === l10n.t('git-toolkit.common.ok') ? document.getText() : undefined;
     
     // Discard changes before closing editor
     await vscode.commands.executeCommand('workbench.action.revertAndCloseActiveEditor');
@@ -165,7 +165,7 @@ async function squashSelectedCommits(commits: any[], workspacePath: string) {
 
     try {
         // Soft reset to the commit before earliest
-        await execCommand('git', ['reset', '--soft', `"${earliestCommit}^"`], workspacePath);
+        await execCommand('git', ['reset', '--soft', `${earliestCommit}^`], workspacePath);
         
         // Create new commit
         await execCommand('git', ['commit', '-m', newMessage], workspacePath);

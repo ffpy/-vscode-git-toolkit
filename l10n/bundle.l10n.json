@@ -1,6 +1,7 @@
 {
     "git-toolkit.common.confirm": "Confirm",
-
+    "git-toolkit.common.ok": "OK",
+    "git-toolkit.common.cancel": "Cancel",
 
     "git-toolkit.squash.selectWorkspace": "Select workspace to squash commits",
     "git-toolkit.squash.noCommits": "No commits found",

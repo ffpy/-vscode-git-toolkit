@@ -1,5 +1,7 @@
 {
     "git-toolkit.common.confirm": "确定",   
+    "git-toolkit.common.ok": "确定",
+    "git-toolkit.common.cancel": "取消",
 
     "git-toolkit.squash.selectWorkspace": "选择要压缩提交的工作区",
     "git-toolkit.squash.noCommits": "未找到提交记录",
