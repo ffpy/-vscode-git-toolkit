@@ -42,6 +42,7 @@
     "git-toolkit.changelist.cannotRenameToDefault": "Cannot rename to default changelist name: {name}",
     "git-toolkit.changelist.failedToRename": "Failed to rename changelist: {error}",
     "git-toolkit.changelist.fileNotInWorkspace": "File is not in any workspace",
+    "git-toolkit.changelist.fileNotTracked": "Cannot add untracked file to changelist. Please commit or stage the file first.",
     "git-toolkit.changelist.noAvailableChangelists": "No available changelists, please create one first",
     "git-toolkit.changelist.filesCount": "{count} files",
     "git-toolkit.changelist.selectToMoveTo": "Select changelist to move to",

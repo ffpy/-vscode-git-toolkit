@@ -42,6 +42,7 @@
     "git-toolkit.changelist.cannotRenameToDefault": "不能重命名为默认变更列表名称：{name}",
     "git-toolkit.changelist.failedToRename": "重命名变更列表失败：{error}",
     "git-toolkit.changelist.fileNotInWorkspace": "文件不在任何工作区中",
+    "git-toolkit.changelist.fileNotTracked": "不能添加未追踪的文件到变更列表。请先提交或暂存该文件。",
     "git-toolkit.changelist.noAvailableChangelists": "没有可用的变更列表，请先创建一个",
     "git-toolkit.changelist.filesCount": "{count} 个文件",
     "git-toolkit.changelist.selectToMoveTo": "选择要移动到的变更列表",

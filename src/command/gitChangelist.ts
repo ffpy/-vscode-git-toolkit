@@ -9,14 +9,30 @@ import { ChangelistTreeItem } from '../view/changelistView';
 import { execCommand, getGitWorkspaceFolders } from '../utils';
 
 /**
- * Get all modified files (including staged and unstaged files)
+ * Check if a file is tracked by Git
+ * @param filePath Relative file path
+ * @param workspacePath Workspace path
+ * @returns Promise<boolean> Returns true if file is tracked by Git
+ */
+async function isFileTracked(filePath: string, workspacePath: string): Promise<boolean> {
+    try {
+        // Use git ls-files to check if file is tracked
+        await execCommand('git', ['ls-files', '--error-unmatch', filePath], workspacePath);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+/**
+ * Get all modified files (including staged and unstaged files, excluding untracked files)
  * @param workspacePath Workspace path
  * @returns Promise<string[]> Returns an array of modified file paths
  */
 async function getModifiedFiles(workspacePath: string): Promise<string[]> {
     try {
-        // Use git status --porcelain to get all modified files
-        const output = await execCommand('git', ['status', '--porcelain'], workspacePath);
+        // Use git status --porcelain -uno to get all modified files (excluding untracked files)
+        const output = await execCommand('git', ['status', '--porcelain', '-uno'], workspacePath);
         
         // Parse output, first two chars are status code, file path starts from third char
         const files = output.split('\n')
@@ -173,6 +189,13 @@ export async function addToChangelist(uriOrArgs: { resourceUri: vscode.Uri }): P
 
         workspacePath = workspaceFolder.uri.fsPath;
         filePath = vscode.workspace.asRelativePath(uri, false);
+
+        // Check if file is tracked by Git
+        if (!(await isFileTracked(filePath, workspacePath))) {
+            vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.fileNotTracked'));
+            return;
+        }
+
         const changelists = ChangelistManager.getInstance().getChangelists(workspacePath);
         
         if (changelists.length === 0) {
