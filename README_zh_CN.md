@@ -32,19 +32,6 @@
 - `git-toolkit: Git Pull With Stash (Rebase)`: 执行Git变基拉取并自动暂存更改
 - `git-toolkit: Git Squash Commits`: 交互式压缩多个提交
 
-## 发布说明
-
-### 1.0.0
-- Git Toolkit 初始发布
-- 添加变更列表管理功能
-- 添加Git提交压缩功能
-- 添加Git拉取变基功能
-
-### 1.0.1
-- 修改命令名称
-- 修复 `Git Squash Commits` 无法处理多行提交信息的问题
-- 变更列表提示不能添加未跟踪的文件
-
 ---
 
 ## 贡献

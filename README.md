@@ -33,19 +33,6 @@ This extension contributes the following commands:
 - `git-toolkit: Git Pull With Stash (Rebase)`: Perform a Git pull rebase with automatic stashing of changes
 - `git-toolkit: Git Squash Commits`: Interactively squash multiple commits
 
-## Release Notes
-
-### 1.0.0
-- Initial release of Git Toolkit
-- Added Changelist management features
-- Added Git squash commits functionality
-- Added Git pull rebase functionality
-
-### 1.0.1
-- Modified command names
-- Fixed `Git Squash Commits` cannot handle multi-line commit messages
-- Added warning message when attempting to add untracked files to changelist
-
 ---
 
 ## Contributing
