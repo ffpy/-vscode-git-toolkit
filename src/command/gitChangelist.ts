@@ -390,4 +390,132 @@ export async function openDiff(workspacePath: string, filePath: string) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         vscode.window.showErrorMessage(l10n.t('git-toolkit.diff.failedToOpen', { error: errorMessage }));
     }
+}
+
+/**
+ * Stash files in changelist
+ * @param item Changelist tree view item
+ */
+export async function stashChangelist(item: ChangelistTreeItem): Promise<void> {
+    if (!item?.changelist?.name) {
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.selectChangelistToStash'));
+        return;
+    }
+
+    const changelist = item.changelist;
+    if (changelist.items.length === 0) {
+        vscode.window.showInformationMessage(l10n.t('git-toolkit.changelist.noFilesToStash'));
+        return;
+    }
+
+    // Get stash message from user
+    const stashMessage = await vscode.window.showInputBox({
+        prompt: l10n.t('git-toolkit.changelist.enterStashMessage'),
+        placeHolder: l10n.t('git-toolkit.changelist.stashMessagePlaceholder'),
+        value: `${changelist.name}`
+    });
+
+    if (!stashMessage) {
+        return;
+    }
+
+    try {
+        const files = changelist.items.map(item => item.path);
+
+        // Remove files from changelist after successful stash
+        for (const file of files) {
+            await changelist.removeFile(file);
+        }
+
+        // Create stash with specific files
+        await execCommand('git', ['stash', 'push', '-m', stashMessage, '--', ...files], changelist.workspacePath);
+
+        vscode.window.showInformationMessage(l10n.t('git-toolkit.changelist.stashSuccess'));
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.stashFailed', { error: errorMessage }));
+    }
+}
+
+/**
+ * Get stash list with details
+ * @param workspacePath Workspace path
+ * @returns Array of stash entries with index and message
+ */
+async function getStashList(workspacePath: string): Promise<Array<{ index: number; message: string }>> {
+    try {
+        const output = await execCommand('git', ['stash', 'list'], workspacePath);
+        return output.split('\n')
+            .filter(line => line.trim())
+            .map(line => {
+                const match = line.match(/^stash@\{(\d+)\}: (.+)$/);
+                if (match) {
+                    return {
+                        index: parseInt(match[1]),
+                        message: match[2]
+                    };
+                }
+                return null;
+            })
+            .filter(item => item !== null);
+    } catch (error) {
+        return [];
+    }
+}
+
+/**
+ * Apply stash to changelist
+ * @param item Changelist tree view item
+ */
+export async function unstashToChangelist(item: ChangelistTreeItem): Promise<void> {
+    if (!item?.changelist?.name) {
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.selectChangelistToStash'));
+        return;
+    }
+
+    const changelist = item.changelist;
+    
+    // Get stash list
+    const stashList = await getStashList(changelist.workspacePath);
+    if (stashList.length === 0) {
+        vscode.window.showInformationMessage(l10n.t('git-toolkit.changelist.noStash'));
+        return;
+    }
+
+    // Show quick pick to select stash
+    const selected = await vscode.window.showQuickPick(
+        stashList.map(stash => ({
+            label: stash.message,
+            description: `stash@{${stash.index}}`,
+            stash
+        })),
+        { placeHolder: l10n.t('git-toolkit.changelist.selectStash') }
+    );
+
+    if (!selected) {
+        return;
+    }
+
+    try {
+        // Get list of files in the stash before popping
+        const diffOutput = await execCommand(
+            'git', 
+            ['stash', 'show', '--name-only', `stash@{${selected.stash.index}}`], 
+            changelist.workspacePath
+        );
+        const stashedFiles = diffOutput.split('\n').filter(line => line.trim());
+
+        // Pop stash (apply and remove)
+        await execCommand('git', ['stash', 'pop', `stash@{${selected.stash.index}}`], changelist.workspacePath);
+
+        // Add files to changelist
+        for (const file of stashedFiles) {
+            await changelist.addFile(file);
+        }
+
+        vscode.window.showInformationMessage(l10n.t('git-toolkit.changelist.unstashSuccess'));
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.changelist.unstashFailed', { error: errorMessage }));
+    }
 } 

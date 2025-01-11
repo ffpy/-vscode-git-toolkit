@@ -16,7 +16,9 @@ import {
 	removeAllFromChangelist,
 	addStagedToChangelist,
 	refreshChangelists,
-	openDiff
+	openDiff,
+	stashChangelist,
+	unstashToChangelist
 } from './command/gitChangelist';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -73,6 +75,8 @@ export function activate(context: vscode.ExtensionContext) {
 	let addStagedToChangelistCommand = vscode.commands.registerCommand('git-toolkit.addStagedToChangelist', addStagedToChangelist);
 	let refreshChangelistsCommand = vscode.commands.registerCommand('git-toolkit.refreshChangelists', refreshChangelists);
 	let openDiffCommand = vscode.commands.registerCommand('git-toolkit.openDiff', openDiff);
+	let stashChangelistCommand = vscode.commands.registerCommand('git-toolkit.stashChangelist', stashChangelist);
+	let unstashToChangelistCommand = vscode.commands.registerCommand('git-toolkit.unstashToChangelist', unstashToChangelist);
 
 	// Register Changelist view
 	const changelistTreeDataProvider = new ChangelistTreeDataProvider(ChangelistManager.getInstance());
@@ -90,7 +94,9 @@ export function activate(context: vscode.ExtensionContext) {
 		removeAllFromChangelistCommand,
 		addStagedToChangelistCommand,
 		refreshChangelistsCommand,
-		openDiffCommand
+		openDiffCommand,
+		stashChangelistCommand,
+		unstashToChangelistCommand
 	);
 }
 

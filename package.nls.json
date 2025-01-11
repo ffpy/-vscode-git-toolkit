@@ -9,6 +9,8 @@
     "git-toolkit.removeAllFromChangelist.title": "Remove all files from changelist",
     "git-toolkit.refreshChangelists.title": "Refresh changelists",
     "git-toolkit.addStagedToChangelist.title": "Add files to changelist",
+    "git-toolkit.stashChangelist.title": "Stash changelist",
+    "git-toolkit.unstashToChangelist.title": "Unstash to changelist",
     "view.changelists.title": "Changelists",
     "view.changelists.contextTitle": "Git Changelists"
 }

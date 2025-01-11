@@ -74,6 +74,16 @@
         "command": "git-toolkit.addStagedToChangelist",
         "title": "%git-toolkit.addStagedToChangelist.title%",
         "icon": "$(add)"
+      },
+      {
+        "command": "git-toolkit.stashChangelist",
+        "title": "%git-toolkit.stashChangelist.title%",
+        "icon": "$(archive)"
+      },
+      {
+        "command": "git-toolkit.unstashToChangelist",
+        "title": "%git-toolkit.unstashToChangelist.title%",
+        "icon": "$(sign-in)"
       }
     ],
     "views": {
@@ -127,6 +137,14 @@
         {
           "command": "git-toolkit.addStagedToChangelist",
           "when": "false"
+        },
+        {
+          "command": "git-toolkit.stashChangelist",
+          "when": "false"
+        },
+        {
+          "command": "git-toolkit.unstashToChangelist",
+          "when": "false"
         }
       ],
       "view/title": [
@@ -166,6 +184,16 @@
           "command": "git-toolkit.addStagedToChangelist",
           "when": "view == git-toolkit-changelists && (viewItem == changelist || viewItem == defaultChangelist)",
           "group": "inline@0"
+        },
+        {
+          "command": "git-toolkit.stashChangelist",
+          "when": "view == git-toolkit-changelists && (viewItem == changelist || viewItem == defaultChangelist)",
+          "group": "inline@4"
+        },
+        {
+          "command": "git-toolkit.unstashToChangelist",
+          "when": "view == git-toolkit-changelists && (viewItem == changelist || viewItem == defaultChangelist)",
+          "group": "inline@5"
         }
       ],
       "scm/resourceState/context": [

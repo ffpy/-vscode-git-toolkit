@@ -5,10 +5,12 @@
     "git-toolkit.removeChangelist.title": "删除变更列表",
     "git-toolkit.renameChangelist.title": "重命名变更列表",
     "git-toolkit.addToChangelist.title": "添加文件到变更列表",
-    "git-toolkit.removeFromChangelist.title": "从变更列表移除文件",
-    "git-toolkit.removeAllFromChangelist.title": "移除所有文件",
+    "git-toolkit.removeFromChangelist.title": "从变更列表移出文件",
+    "git-toolkit.removeAllFromChangelist.title": "移出所有文件",
     "git-toolkit.refreshChangelists.title": "刷新变更列表",
     "git-toolkit.addStagedToChangelist.title": "添加文件到变更列表",
+    "git-toolkit.stashChangelist.title": "暂存到 Stash",
+    "git-toolkit.unstashToChangelist.title": "从 Stash 恢复",
     "view.changelists.title": "变更列表",
     "view.changelists.contextTitle": "Git 变更列表"
 }

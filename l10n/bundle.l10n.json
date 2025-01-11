@@ -66,5 +66,15 @@
     "git-toolkit.changelist.failedToSaveState": "Failed to save changelist state ({workspace}): {error}",
     "git-toolkit.changelist.failedToLoadState": "Failed to load changelist state: {error}",
     "git-toolkit.changelist.failedToLoadWorkspaceState": "Failed to load changelist state for workspace {workspace}: {error}",
-    "git-toolkit.diff.failedToOpen": "Failed to open diff view: {error}"
+    "git-toolkit.diff.failedToOpen": "Failed to open diff view: {error}",
+    "git-toolkit.changelist.selectChangelistToStash": "Please select a changelist to stash",
+    "git-toolkit.changelist.noFilesToStash": "No files to stash in changelist",
+    "git-toolkit.changelist.enterStashMessage": "Enter stash message",
+    "git-toolkit.changelist.stashMessagePlaceholder": "Stash message",
+    "git-toolkit.changelist.stashSuccess": "Successfully stashed changes",
+    "git-toolkit.changelist.stashFailed": "Failed to stash changes: {error}",
+    "git-toolkit.changelist.noStash": "No stash available",
+    "git-toolkit.changelist.selectStash": "Select stash to apply",
+    "git-toolkit.changelist.unstashSuccess": "Successfully unstashed changes",
+    "git-toolkit.changelist.unstashFailed": "Failed to unstash changes: {error}"
 }
