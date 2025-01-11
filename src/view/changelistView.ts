@@ -26,6 +26,11 @@ export class ChangelistTreeItem extends vscode.TreeItem {
             // Configuration for file items
             this.contextValue = 'file';
             this.iconPath = new vscode.ThemeIcon('file');
+            this.command = {
+                command: 'git-toolkit.openDiff',
+                title: 'Open Diff',
+                arguments: [changelist?.workspacePath, file]
+            };
         } else if (workspaceFolder) {
             // Configuration for workspace folder items
             this.contextValue = 'workspaceFolder';

@@ -65,5 +65,6 @@
     "git-toolkit.changelist.nameAlreadyExists": "已存在同名的变更列表",
     "git-toolkit.changelist.failedToSaveState": "保存变更列表状态失败（{workspace}）：{error}",
     "git-toolkit.changelist.failedToLoadState": "加载变更列表状态失败：{error}",
-    "git-toolkit.changelist.failedToLoadWorkspaceState": "加载工作区 {workspace} 的变更列表状态失败：{error}"
+    "git-toolkit.changelist.failedToLoadWorkspaceState": "加载工作区 {workspace} 的变更列表状态失败：{error}",
+    "git-toolkit.diff.failedToOpen": "打开差异对比视图失败：{error}"
 }

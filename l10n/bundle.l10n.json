@@ -65,5 +65,6 @@
     "git-toolkit.changelist.nameAlreadyExists": "Changelist with this name already exists",
     "git-toolkit.changelist.failedToSaveState": "Failed to save changelist state ({workspace}): {error}",
     "git-toolkit.changelist.failedToLoadState": "Failed to load changelist state: {error}",
-    "git-toolkit.changelist.failedToLoadWorkspaceState": "Failed to load changelist state for workspace {workspace}: {error}"
+    "git-toolkit.changelist.failedToLoadWorkspaceState": "Failed to load changelist state for workspace {workspace}: {error}",
+    "git-toolkit.diff.failedToOpen": "Failed to open diff view: {error}"
 }

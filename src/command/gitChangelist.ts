@@ -7,6 +7,8 @@ import * as l10n from '@vscode/l10n';
 import { Changelist, ChangelistManager, DEFAULT_CHANGELIST_NAME } from '../model/changelist';
 import { ChangelistTreeItem } from '../view/changelistView';
 import { execCommand, getGitWorkspaceFolders } from '../utils';
+import * as path from 'path';
+import { Uri } from 'vscode';
 
 /**
  * Check if a file is tracked by Git
@@ -351,4 +353,41 @@ export async function addStagedToChangelist(item: ChangelistTreeItem): Promise<v
  */
 export function refreshChangelists(): void {
     ChangelistManager.getInstance().loadState();
+}
+
+/**
+ * Open diff view for file
+ * @param workspacePath Workspace path
+ * @param filePath File path relative to workspace
+ */
+export async function openDiff(workspacePath: string, filePath: string) {
+    try {
+        const absolutePath = path.join(workspacePath, filePath);
+        const fileUri = Uri.file(absolutePath);
+        
+        // Create a title for the diff view
+        const title = path.basename(filePath);
+        
+        // Create Git URI for the index version
+        // Use VS Code's built-in Git resource URI format
+        const gitUri = fileUri.with({ 
+            scheme: 'git',
+            path: fileUri.path,
+            query: JSON.stringify({
+                path: fileUri.fsPath,
+                ref: 'HEAD'
+            })
+        });
+        
+        // Open diff view
+        await vscode.commands.executeCommand(
+            'vscode.diff',
+            gitUri,              // git index version
+            fileUri,            // working tree version
+            `${title} (Index ↔ Working Tree)`
+        );
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        vscode.window.showErrorMessage(l10n.t('git-toolkit.diff.failedToOpen', { error: errorMessage }));
+    }
 } 
