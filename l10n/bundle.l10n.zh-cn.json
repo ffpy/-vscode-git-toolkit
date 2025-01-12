@@ -7,7 +7,7 @@
     "git-toolkit.squash.noCommits": "未找到提交记录",
     "git-toolkit.squash.commitList": "提交列表 ({0})",
     "git-toolkit.squash.selectCommits": "选择要压缩的提交（该提交及其之后的所有提交都会被压缩）",
-    "git-toolkit.squash.authorCommitted": "{0} 提交于 {1}",
+    "git-toolkit.squash.authorCommitted": "{author} 提交于 {date} ({hash})",
     "git-toolkit.squash.selectAtLeastTwo": "请至少选择两个提交进行压缩",
     "git-toolkit.squash.editMessage": "请在编辑器中编辑提交信息，然后点击\"确定\"按钮。",
     "git-toolkit.squash.newMessage": "新的提交信息：{0}",

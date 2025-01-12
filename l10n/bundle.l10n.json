@@ -7,7 +7,7 @@
     "git-toolkit.squash.noCommits": "No commits found",
     "git-toolkit.squash.commitList": "Commit List ({0})",
     "git-toolkit.squash.selectCommits": "Select commit to squash (this and all commits after will be squashed)",
-    "git-toolkit.squash.authorCommitted": "{0} committed on {1}",
+    "git-toolkit.squash.authorCommitted": "{author} committed on {date} ({hash})",
     "git-toolkit.squash.selectAtLeastTwo": "Please select at least two commits to squash",
     "git-toolkit.squash.editMessage": "Please edit the commit message in the editor, then click \"OK\" button.",
     "git-toolkit.squash.newMessage": "New commit message: {0}",
