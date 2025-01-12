@@ -1,6 +1,6 @@
 {
-    "git-toolkit.gitPullRebase.title": "Git Pull With Stash (Rebase)",
-    "git-toolkit.gitSquashCommits.title": "Git Squash Commits",
+    "git-toolkit.gitPullRebase.title": "Git ToolKit: Pull (Rebase With Stash)",
+    "git-toolkit.gitSquashCommits.title": "Git ToolKit: Squash Commits",
     "git-toolkit.addChangelist.title": "Add changelist",
     "git-toolkit.removeChangelist.title": "Remove changelist",
     "git-toolkit.renameChangelist.title": "Rename changelist",

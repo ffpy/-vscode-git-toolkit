@@ -1,6 +1,6 @@
 {
-    "git-toolkit.gitPullRebase.title": "Git 拉取并暂存(变基)",
-    "git-toolkit.gitSquashCommits.title": "Git 压缩提交",
+    "git-toolkit.gitPullRebase.title": "Git ToolKit: 拉取(变基并暂存)",
+    "git-toolkit.gitSquashCommits.title": "Git ToolKit: 压缩提交",
     "git-toolkit.addChangelist.title": "添加变更列表",
     "git-toolkit.removeChangelist.title": "删除变更列表",
     "git-toolkit.renameChangelist.title": "重命名变更列表",
