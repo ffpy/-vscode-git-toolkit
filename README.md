@@ -30,8 +30,8 @@ None
 ## Extension Commands
 
 This extension contributes the following commands:
-- `git-toolkit: Git Pull With Stash (Rebase)`: Perform a Git pull rebase with automatic stashing of changes
-- `git-toolkit: Git Squash Commits`: Interactively squash multiple commits
+- `Git ToolKit: Pull (Rebase With Stash)`: Perform a Git pull rebase with automatic stashing of changes
+- `Git ToolKit: Squash Commits`: Squash multiple commits
 
 ---
 

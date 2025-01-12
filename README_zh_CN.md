@@ -29,8 +29,8 @@
 ## 扩展命令
 
 此扩展提供以下命令：
-- `git-toolkit: Git Pull With Stash (Rebase)`: 执行Git变基拉取并自动暂存更改
-- `git-toolkit: Git Squash Commits`: 交互式压缩多个提交
+- `Git ToolKit: 拉取(变基并暂存)`: 执行Git变基拉取并自动暂存更改
+- `Git ToolKit: 压缩提交`: 压缩多个提交
 
 ---
 
