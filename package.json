@@ -29,7 +29,8 @@
     "commands": [
       {
         "command": "git-toolkit.gitPullRebase",
-        "title": "%git-toolkit.gitPullRebase.title%"
+        "title": "%git-toolkit.gitPullRebase.title%",
+        "icon": "$(cloud-download)"
       },
       {
         "command": "git-toolkit.gitSquashCommits",
@@ -206,6 +207,18 @@
               "resourceUri": "${resourceUri}"
             }
           ]
+        }
+      ],
+      "scm/title": [
+        {
+          "command": "git-toolkit.gitPullRebase",
+          "group": "git-toolkit",
+          "when": "scmProvider == git"
+        },
+        {
+          "command": "git-toolkit.gitSquashCommits",
+          "group": "git-toolkit",
+          "when": "scmProvider == git"
         }
       ]
     }
