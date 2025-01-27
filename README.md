@@ -33,6 +33,12 @@ This extension contributes the following commands:
 - `Git ToolKit: Pull (Rebase With Stash)`: Perform a Git pull rebase with automatic stashing of changes
 - `Git ToolKit: Squash Commits`: Squash multiple commits
 
+## Package Extension
+To package the extension:
+1. Install vsce: `npm install -g @vscode/vsce`
+2. Run command: `vsce package`
+3. The generated `.vsix` file can be installed in VS Code
+
 ---
 
 ## Contributing

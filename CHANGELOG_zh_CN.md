@@ -4,6 +4,11 @@
 
 参考 [Keep a Changelog](http://keepachangelog.com/) 了解如何构建此文件。
 
+## [1.1.1] - 2025-01-27
+### 变更
+- 将变更列表配置文件位置从 `.vscode/changelists.json` 改为 `.git/info/changelists.json`
+- 改进提交压缩的验证和用户体验
+
 # [1.1.0] - 2025-01-12
 ### 新增
 - 在源代码管理标题栏添加 Git 拉取变基和提交压缩快捷按钮

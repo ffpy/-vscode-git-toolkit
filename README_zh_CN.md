@@ -32,6 +32,12 @@
 - `Git ToolKit: 拉取(变基并暂存)`: 执行Git变基拉取并自动暂存更改
 - `Git ToolKit: 压缩提交`: 压缩多个提交
 
+## 打包扩展
+打包扩展的步骤：
+1. 安装vsce: `npm install -g @vscode/vsce`
+2. 运行命令: `vsce package`
+3. 生成的`.vsix`文件可以在VS Code中安装
+
 ---
 
 ## 贡献

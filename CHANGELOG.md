@@ -4,6 +4,11 @@ All notable changes to the "git-toolkit" extension will be documented in this fi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.1] - 2025-01-27
+### Changed
+- Changed changelist configuration file location from `.vscode/changelists.json` to `.git/info/changelists.json`
+- Improve squash commits validation and UX
+
 ## [1.1.0] - 2025-01-12
 ### Added
 - Added Git pull rebase and squash commits buttons to SCM title
