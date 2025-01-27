@@ -135,7 +135,58 @@ export class ChangelistManager {
      * Get workspace configuration file path
      */
     private getConfigPath(workspacePath: string): string {
+        return path.join(workspacePath, '.git', 'info', 'changelists.json');
+    }
+
+    /**
+     * Get old configuration file path
+     */
+    private getOldConfigPath(workspacePath: string): string {
         return path.join(workspacePath, '.vscode', 'changelists.json');
+    }
+
+    /**
+     * Check if old configuration file exists
+     */
+    private async hasOldConfig(workspacePath: string): Promise<boolean> {
+        try {
+            await fs.access(this.getOldConfigPath(workspacePath));
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Migrate data from old location to new location
+     */
+    private async migrateOldData(workspacePath: string): Promise<void> {
+        // Skip migration if old config doesn't exist
+        if (!await this.hasOldConfig(workspacePath)) {
+            return;
+        }
+
+        const oldPath = this.getOldConfigPath(workspacePath);
+        const newPath = this.getConfigPath(workspacePath);
+
+        try {
+            // Read old config
+            const oldContent = await fs.readFile(oldPath, 'utf-8');
+            const oldData = JSON.parse(oldContent);
+
+            // Write to new location
+            await fs.writeFile(newPath, JSON.stringify(oldData, null, 2));
+
+            // Delete old config
+            await fs.unlink(oldPath);
+
+            // Only log to debug output
+            log(`Migrated changelist data from ${oldPath} to ${newPath}`);
+        } catch (error: any) {
+            // Only log to debug output
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            log(`Failed to migrate changelist data: ${errorMessage}`);
+        }
     }
 
     /**
@@ -249,9 +300,6 @@ export class ChangelistManager {
     async saveState(workspacePath: string): Promise<void> {
         try {
             const configPath = this.getConfigPath(workspacePath);
-            const vscodeDir = path.dirname(configPath);
-            await fs.mkdir(vscodeDir, { recursive: true });
-
             const changelists = this.getChangelists(workspacePath);
             const data: SerializedData = {
                 changelists: changelists.map(cl => cl.toJSON())
@@ -271,6 +319,9 @@ export class ChangelistManager {
      * @param workspacePath Workspace path
      */
     private async loadSerializedData(workspacePath: string): Promise<SerializedData> {
+        // Try to migrate old data first
+        await this.migrateOldData(workspacePath);
+
         const configPath = this.getConfigPath(workspacePath);
         try {
             const content = await fs.readFile(configPath, 'utf-8');
