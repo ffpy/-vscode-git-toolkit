@@ -15,7 +15,7 @@
     "git-toolkit.squash.success": "提交压缩成功！",
     "git-toolkit.squash.failedToSquash": "压缩提交失败：{0}",
     "git-toolkit.squash.failedToGetLog": "获取 Git 日志失败：{0}",
-    "git-toolkit.squash.noCommitsToSquash": "没有找到其他可以与所选提交一起压缩的提交",
+    "git-toolkit.squash.selectOneCommit": "请选择至少两个提交进行压缩",
 
     "git-toolkit.pull.selectWorkspace": "选择要执行 Git Pull Rebase 的工作区",
     "git-toolkit.pull.stashingUncommitted": "正在暂存未提交的代码...",

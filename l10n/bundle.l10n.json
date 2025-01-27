@@ -15,7 +15,7 @@
     "git-toolkit.squash.success": "Commits squashed successfully!",
     "git-toolkit.squash.failedToSquash": "Failed to squash commits: {0}",
     "git-toolkit.squash.failedToGetLog": "Failed to get Git log: {0}",
-    "git-toolkit.squash.noCommitsToSquash": "No other commits found to squash with the selected commit",
+    "git-toolkit.squash.selectOneCommit": "Please select at least two commits to squash",
 
     "git-toolkit.pull.selectWorkspace": "Select workspace for Git Pull Rebase",
     "git-toolkit.pull.stashingUncommitted": "Stashing uncommitted code...",

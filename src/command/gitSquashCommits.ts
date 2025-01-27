@@ -109,7 +109,7 @@ async function showCommitMessageEditor(defaultMessage: string): Promise<string |
         l10n.t('git-toolkit.common.cancel')
     );
 
-    const newMessage = editResult === l10n.t('git-toolkit.common.ok') ? document.getText() : undefined;
+    const newMessage = editResult === l10n.t('git-toolkit.common.ok') ? document.getText().trim() : undefined;
     await vscode.commands.executeCommand('workbench.action.revertAndCloseActiveEditor');
     
     return newMessage;
@@ -144,8 +144,8 @@ async function selectCommitsToSquash(commits: GitCommit[]): Promise<GitCommit[]>
             resolve(quickPick.selectedItems);
             quickPick.hide();
         });
+        
         quickPick.onDidHide(() => {
-            resolve([]);
             quickPick.dispose();
         });
     });
@@ -371,8 +371,11 @@ export async function gitSquashCommits() {
         }
 
         const selectedCommits = await selectCommitsToSquash(commits);
-        if (selectedCommits.length <= 1) {
-            vscode.window.showErrorMessage(l10n.t('git-toolkit.squash.noCommitsToSquash'));
+        if (selectedCommits.length === 1) {
+            vscode.window.showInformationMessage(l10n.t('git-toolkit.squash.selectOneCommit'));
+            return;
+        }
+        if (selectedCommits.length === 0) {
             return;
         }
 
