@@ -39,6 +39,8 @@ To package the extension:
 2. Run command: `vsce package`
 3. The generated `.vsix` file can be installed in VS Code
 
+> If you encounter the error `The filename, directory name, or volume label syntax is incorrect.` when packaging on Windows, please use `WSL` to run the packaging command
+
 ---
 
 ## Contributing
